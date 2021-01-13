@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="#" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-light bg-danger fixed-top">
@@ -30,17 +30,203 @@
     </div>
 </nav>
 
-<div class="justify-content-start m-5">
-    <h1 class="row my-4">
+<div class="container-fluid m-2">
+<div class="justify-content-center mt-5">
+    <h1 class="my-4">
         myFlix API Documentation
     </h1>
-    <article class="row">
+    <article>
         <p>
             This REST API is part of a web application that will provide users with access to information about different 
             movies, directors, and genres. <br>
             Users will be able to sign up, update their personal information, and create a list of their favorite movies.
         </p>
     </article>
+</div>
+<div class="justify-content-center">
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered table-hover table-striped" style="font-size: 0.8rem;">
+            <caption>List of API endpoints</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Endpoint</th>
+                    <th scope="col">Business Logic</th>
+                    <th scope="col">HTTP Method</th>
+                    <th scope="col">Request body data format</th>
+                    <th scope="col">Response body data format</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">/</th>
+                    <td>Welcoming the client to the API</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>A text message welcoming the client to the API</td>
+                </tr>
+                <tr>
+                    <th scope="row">/movies</th>
+                    <td>Returns a list of all movies to the user</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>A JSON object holding data about all movies</td>
+                </tr>
+                <tr>
+                    <th scope="row">/movies/[Title]</th>
+                    <td>Returns data about a single movie by title to the user</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>A JSON object holding data about a single movie, containing the title,
+                        description, director, genre and image URL. Example:
+<pre><code>{
+    "title": "The Green Mile",
+    "description": "The Green Mile is a 1999 American fantasy drama film [...]",
+    "director": "Frank Darabont",
+    "genre": "Drama",
+    "imgUrl": "https://static.wikia.nocookie.net/stephenking/images
+    /9/97/301px-TheGreenMileCover.jpg/revision/latest?cb=20170504035640"
+}</code></pre>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">movies/genres/[Title]</th>
+                    <td>Returns data about a genre by title</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>A JSON object holding data about a genre,
+                        containing the title and description. Example:
+<pre><code>{
+    "title": "Drama",
+    "description": "The drama genre features stories [...]"
+}</code></pre>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">movies/directors/[Name]</th>
+                    <td>Returns data about a director by name</td>
+                    <td>GET</td>
+                    <td>None</td>
+                    <td>A JSON object holding data about a director, containing
+                        the name, bio, birth year, death year. Example:
+<pre><code>{
+    "name": "Christopher Nolan",
+    "bio": "Christopher Edward Nolan CBE is a British-American [...]",
+    "birthYear": "1970",
+    "deathYear": "-"
+}</code></pre>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">/users</th>
+                    <td>Allows a new user to register</td>
+                    <td>POST</td>
+                    <td>A JSON object holding data about the user to add, containing
+                        the username, password, email and date of birth. Example:
+<pre><code>{
+    "username": "ryantwinsley",
+    "password": "morethansafe",
+    "email": "ryan.twinsley@somehost.com",
+    "doB": "03/16/1995"
+}</code></pre>
+                    </td>
+                    <td>A JSON object holding data about the user added, including an ID:
+<pre><code>{
+    "id": "1",
+    "favoriteMovies": [],
+    "username": "ryantwinsley",
+    "password": "morethansafe",
+    "email": "ryan.twinsley@somehost.com",
+    "doB": "03/16/1995"
+}</code></pre>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">/users/[UName]</th>
+                    <td>Allows a user to update its user informations</td>
+                    <td>PUT</td>
+                    <td>A JSON object holding all data (to be updated and not to be updated ones) about that user:
+<pre><code>{
+    "username": "ryantwinsley",
+    "password": "evenmorethansafe",
+    "email": "ryan.twinsley@somehost.com",
+    "doB": "03/16/1995"
+}</code></pre>
+                    </td>
+                    <td>A JSON object holding all (updated) data about that user:
+<pre><code>{
+    "id": "1",
+    "favoriteMovies": [],
+    "username": "ryantwinsley",
+    "password": "evenmorethansafe",
+    "email": "ryan.twinsley@somehost.com",
+    "doB": "03/16/1995"
+}</code></pre>
+                    </td>
+                </tr>
+                <!-- <tr>
+                    <th scope="row">/users/[ID]/[Password]</th>
+                    <td>Allows a user to update its password</td>
+                    <td>PUT</td>
+                    <td>None</td>
+                    <td>A text message indicating wheter the password was updated</td>
+                </tr>
+                <tr>
+                    <th scope="row">/users/[ID]/[Mail]</th>
+                    <td>Allows a user to update its email adress</td>
+                    <td>PUT</td>
+                    <td>None</td>
+                    <td>A text message indicating wheter the email adress was updated</td>
+                </tr>
+                <tr>
+                    <th scope="row">/users/[ID]/[doB]</th>
+                    <td>Allows a user to update its date of birth</td>
+                    <td>PUT</td>
+                    <td>None</td>
+                    <td>A text message indicating wheter the date of birth was updated</td>
+                </tr> -->
+                <tr>
+                    <th scope="row">/users/[UName]/movies/[MovieID]</th>
+                    <td>Allows a user to add a movie to its list of favorites</td>
+                    <td>POST</td>
+                    <td>None</td>
+                    <td>A JSON object holding all data about that user, including an updated list of favorites:
+<pre><code>{
+    "id": "1",
+    "favoriteMovies": ["23571556"],
+    "username": "ryantwinsley",
+    "password": "morethansafe",
+    "email": "ryan.twinsley@somehost.com",
+    "doB": "03/16/1995"
+}</code></pre>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">/users/[UName]/movies/[MovieID]</th>
+                    <td>Allows a user to remove a movie from its list of favorites</td>
+                    <td>DELETE</td>
+                    <td>None</td>
+                    <td>A JSON object holding all data about that user, including an updated list of favorites:
+<pre><code>{
+    "id": "1",
+    "favoriteMovies": [],
+    "username": "ryantwinsley",
+    "password": "morethansafe",
+    "email": "ryan.twinsley@somehost.com",
+    "doB": "03/16/1995"
+}</code></pre>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">/users/[UName]</th>
+                    <td>Allows an existing user to deregister</td>
+                    <td>DELETE</td>
+                    <td>None</td>
+                    <td>A text message indicating wheter the user was deregistered successfully</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>

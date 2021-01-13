@@ -1,6 +1,7 @@
 /* global __dirname */
 const express = require('express'),
-morgan = require('morgan');
+morgan = require('morgan'),
+bodyParser = require('body-parser');
 
 const app = express();
 
@@ -38,7 +39,7 @@ let topMovies = [
                             The film stars Leonardo DiCaprio as a professional thief who steals information by infiltrating the subconscious of his targets.
                             He is offered a chance to have his criminal history erased as payment for the implantation of another person's idea into a target's subconscious.`,
         director: 'Christopher Nolan',
-        genre: 'Science Fiction',
+        genre: 'Science fiction',
         imgUrl: 'https://pics.filmaffinity.com/inception-652954101-large.jpg'
     },
     {
@@ -56,7 +57,7 @@ let topMovies = [
         description: `Armageddon is a 1998 American science fiction disaster film produced and directed by Michael Bay, produced by Jerry Bruckheimer, and released by Touchstone Pictures.
                             The film follows a group of blue-collar deep-core drillers sent by NASA to stop a gigantic asteroid on a collision course with Earth.`,
         director: 'Michael Bay',
-        genre: 'Science Fiction',
+        genre: 'Science fiction',
         imgUrl: 'https://upload.wikimedia.org/wikipedia/en/f/fc/Armageddon-poster06.jpg'
     },
     {
@@ -68,7 +69,7 @@ let topMovies = [
                             form an alliance to dismantle organized crime in Gotham City, but are menaced by an anarchistic mastermind known as the Joker (Ledger), who seeks to undermine
                             Batman's influence and throw the city into anarchy. `,
         director: 'Christopher Nolan',
-        genre: 'Superhero',
+        genre: 'Action',
         imgUrl: 'https://cdn.prime1studio.com/media/catalog/product/cache/1/image/1400x1400/17f82f742ffe127f42dca9de82fb58b1/h/d/hdmmdc-02_a19.jpg'
     },
     {
@@ -79,7 +80,7 @@ let topMovies = [
                             When computer programmer Thomas Anderson, under the hacker alias "Neo", uncovers the truth, he "is drawn into a rebellion against the machines"
                             along with other people who have been freed from the Matrix.`,
         director: 'The Wachowskis',
-        genre: 'Science Fiction',
+        genre: 'Science fiction',
         imgUrl: 'http://barkerhost.com/wp-content/uploads/sites/4/2019/03/gynBNzwyaHKtXqlEKKLioNkjKgN-1.jpg'
     },
     {
@@ -101,8 +102,81 @@ let topMovies = [
     }
 ];
 
+let genres = [
+    {
+        title: 'Drama',
+        description: `The drama genre features stories with high stakes and a lot of conflicts.
+        They’re plot-driven and demand that every character and scene move the story forward.
+        Dramas follow a clearly defined narrative plot structure, portraying real-life scenarios or extreme situations with emotionally-driven characters.
+        Films that fall into drama sub-genres include historical drama, romantic drama, teen drama, medical drama, docudrama, and film noir.`
+    },
+    {
+        title: 'Action',
+        description: `Movies in the action genre are fast-paced and include a lot of action like fight scenes, chase scenes, and slow-motion shots.
+        They can feature superheroes, martial arts, or exciting stunts.
+        These high-octane films are more about the execution of the plot rather than the plot itself.
+        Action movies are meant to be thrilling to watch and leave audience members on the edge of their seats.
+        Cop movies, disaster films, and some spy films all fall under the action category.`
+    },
+    {
+        title: 'Science fiction',
+        description: `The sci-fi genre builds worlds and alternate realities filled with imagined elements that don’t exist in the real world.
+        Science fiction spans a wide range of themes that often explore time travel, space travel, are set in the future, and deal with the consequences of technological and scientific advances.
+        Sci-fi movies typically involve meticulous world-building with a strong attention to detail in order for the audience to believe the story and universe.`
+    },
+];
+
+let directors = [
+    {
+        name: 'Frank Darabont',
+        bio: `Frank Árpád Darabont is a Hungarian-American film director, screenwriter and producer
+         who has been nominated for three Academy Awards and a Golden Globe Award.
+         In his early career, he was primarily a screenwriter for horror films such as A Nightmare on Elm Street 3: Dream Warriors (1987),
+         The Blob (1988) and The Fly II (1989). As a director, he is known for his film adaptations of Stephen King novellas and novels
+         such as The Shawshank Redemption (1994), The Green Mile (1999) and The Mist (2007).`,
+         birthYear: '1959',
+         deathYear: '-'
+    },
+    {
+        name: 'Barry Levinson',
+        bio: `Barry Levinson is an American filmmaker, screenwriter, and actor.
+        Levinson's best-known works are mid-budget comedy-drama and drama films such as Diner (1982),
+        The Natural (1984), Good Morning, Vietnam (1987), Bugsy (1991), and Wag the Dog (1997).
+        He won the Academy Award for Best Director for Rain Man (1988).`,
+        birthYear: '1942',
+        deathYear: '-'
+    },
+    {
+        name: 'Michael Bay',
+        bio: `Michael Benjamin Bay is an American film director and producer.
+        He is best known for making big-budget, high-concept action films characterized by fast cutting,
+        stylistic cinematography and visuals, and extensive use of special effects, including frequent depictions of explosions.
+        The films he has produced and directed, which include Armageddon (1998), Pearl Harbor (2001)
+        and the Transformers film series (2007–present), have grossed over US$7.8 billion worldwide,
+        making him one of the most commercially successful directors in history.`,
+        birthYear: '1965',
+        deathYear: '-'
+    },
+    {
+        name: 'Christopher Nolan',
+        bio: `Christopher Edward Nolan CBE is a British-American film director, producer, and screenwriter.
+        His directorial efforts have grossed more than US$5.1 billion worldwide, garnered 34 Oscar nominations and ten wins.
+        Born and raised in London, Nolan developed an interest in filmmaking from a young age.
+        After studying English literature at University College London, he made his feature debut with Following (1998).
+        Nolan gained international recognition with his second film, Memento (2000), for which he was nominated for the Academy Award for Best Original Screenplay.
+        He transitioned from independent to studio filmmaking with Insomnia (2002), and found further critical and
+        commercial success with The Dark Knight Trilogy (2005–2012), The Prestige (2006), and Inception (2010),
+        which received eight Oscar nominations, including for Best Picture and Best Original Screenplay.
+        This was followed by Interstellar (2014), Dunkirk (2017), and Tenet (2020).
+        He earned Academy Award nominations for Best Picture and Best Director for his work on Dunkirk. `,
+        birthYear: '1970',
+        deathYear: '-'
+    }
+];
+
 app.use(morgan('common'));
 app.use(express.static('public'));
+app.use(bodyParser.json());
 //error handler
 app.use((err, req, res, next) => {
     console.error(err.stack);
