@@ -1,7 +1,8 @@
 /* global __dirname */
 const express = require('express'),
 morgan = require('morgan'),
-bodyParser = require('body-parser');
+bodyParser = require('body-parser'),
+uuid = require('uuid');
 
 const app = express();
 
@@ -173,7 +174,7 @@ let directors = [
         deathYear: '-'
     }
 ];
-
+let users = [];
 app.use(morgan('common'));
 app.use(express.static('public'));
 app.use(bodyParser.json());
@@ -182,12 +183,109 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
 })
-//GET requests
-app.get('/movies', (req, res) => {
-    res.json(topMovies);
-});
+
 app.get('/', (req, res) => {
+    console.log('Hi there!');
     res.send('Welcome to myFlix!');
+});
+//GET a List of all Movies
+app.get('/movies', (req, res) => {
+    res.status(201).json(topMovies);
+});
+//GET data about a single movie by title
+app.get('/movies/:title', (req, res) => {
+    let movie = topMovies.find((movie) => {return movie.title === req.params.title});
+    if (movie) {
+        res.status(201).json(movie);
+    } else {
+        res.status(404).send('Movie ' + req.params.title + ' was not found.');
+    }
+});
+//GET data about a genre by title
+app.get('/movies/genres/:title', (req, res) => {
+    let genre = genres.find((genre) => {return genre.title === req.params.title});
+    if (genre) {
+        res.status(201).json(genre);
+    } else {
+        res.status(404).send('Genre ' + req.params.title + ' was not found.');
+    }
+});
+//GET data about a director by name
+app.get('/movies/directors/:name', (req, res) => {
+    let director = directors.find((director) => {return director.name === req.params.name});
+    if (director) {
+        res.status(201).json(director);
+    } else {
+        res.status(404).send('Director ' + req.params.name + ' was not found.');
+    }
+});
+//POST a new user (registration)
+app.post('/users', (req, res) => {
+    let newUser = req.body;
+    let user = users.find((user) => {return user.username === newUser.username});
+    if(!user) {
+        newUser.id = uuid.v4();
+        newUser.favoriteMovies = [];
+        users.push(newUser);
+        res.status(201).json(newUser);
+    } else {
+        res.status(400).send('This user already exists.');
+    }
+});
+//Update users credentials
+app.put('/users/:username', (req, res) => {
+    let newCreds = req.body;
+    let user = users.find((user) => {return user.username === req.params.username});
+    if (!user) {
+        res.status(404).send('User ' + newCreds.username + ' is not registered.');
+    } else {
+        user.username = newCreds.username;
+        user.password = newCreds.password;
+        user.email = newCreds.email;
+        user.doB = newCreds.doB;
+        res.status(201).json(user);
+    }
+});
+//Adds a movie to a users list of favorites
+app.post('/users/:username/movies/:mId', (req, res) => {
+    let user = users.find((user) => {return user.username === req.params.username});
+    let movie = topMovies.find((movie) => {return movie.id === req.params.mId});
+
+    if (!user) {
+        res.status(404).send('This user does not exist.');
+    } else if (!movie) {
+        res.status(404).send('This movie could not be found within database.');
+    } else {
+        user.favoriteMovies.push(movie);
+        res.status(201).send('This movie was successfully added to ' + user.username + 's list of favorites.');
+    }
+});
+//Deletes a movie from a users list of favorites
+app.delete('/users/:username/movies/:mId', (req, res) => {
+    let user = users.find((user) => {return user.username === req.params.username});
+
+    if (!user) {
+        res.status(404).send('This user does not exist.');
+    } else {
+        let movie = user.favoriteMovies.find((movie) => {return movie.id === req.params.mId});
+        if (!movie) {
+            res.status(404).send('This movie could not be found within ' + user.username +'s list of favorites.');
+        } else {
+        user.favoriteMovies = user.favoriteMovies.filter((obj) => {return obj.id !== req.params.mId});
+        res.status(201).send('This movie was successfully deleted from ' + user.username + 's list of favorites.');
+        }
+    }
+});
+//Deletes a user
+app.delete('/users/:username', (req, res) => {
+    let user = users.find((user) => {return user.username === req.params.username});
+
+    if (!user) {
+        res.status(404).send(req.params.username + ' was not found.');
+    } else {
+        users.filter((obj) => {return obj.username !== req.params.username});
+        res.status(201).send(req.params.username + ' was successfully deregistered.');
+    }
 });
 
 //listen for requests

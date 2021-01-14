@@ -1,0 +1,93 @@
+:root{
+    --primary-color: #702283;
+    --secondary-color: #c7d540;
+    --tertiary-color: #d3d3d3;
+    --cyan: #17a2b8;
+    --danger: #dc3545;
+}
+
+*{
+    box-sizing: border-box;
+}
+body{
+}
+nav {
+    background-color: var(--primary-color);
+}
+nav img {
+    width: 40px;
+}
+.nav-item {
+    padding: 0;
+    margin: 0;
+}
+.navbar-collapse {
+    text-align: end;
+    flex-grow: 0;
+}
+.nav-link {
+    font-size: 1.2rem;
+    color: black;
+    transition: color 250ms ease-out;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.navbar-brand {
+    font-size: 1.3rem;
+    transition: color 250ms ease-out;
+}
+.nav-link:hover, .navbar .navbar-brand:hover {
+    color: var(--secondary-color) !important;
+}
+.mt-5 {
+    margin-top: 5.5rem !important;
+}
+td pre {
+    margin: 0;
+}
+.contact {
+    margin-top: 3.8rem;
+    margin-bottom: 1rem;
+}
+.contact p {
+    margin: 0;
+    font-size: 1rem;
+}
+.contact a {
+    color: var(--primary-color);
+}
+#contact-form {
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+.form-group:last-of-type {
+    margin-bottom: 0rem;
+}
+.required-input {
+    font-size: 0.8rem !important;
+    font-style: italic;
+    margin: 0.5rem 0 !important;
+}
+footer {
+    margin: 1rem 0;
+    border-top: 2px solid var(--danger);
+}
+.footer-content {
+    margin-top: 1rem;
+}
+/*form validation UI pattern styling*/
+.input-wrapper {
+  margin-bottom: 10px;
+}
+label {
+  display: inline-block;
+  min-width: 75px;
+}
+.error-message {
+  color: var(--danger);
+  font-size: 0.8em;
+  font-weight: bolder;
+}
+table {
+    font-size: 0.8rem;
+}
