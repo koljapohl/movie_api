@@ -163,27 +163,6 @@
 }</code></pre>
                     </td>
                 </tr>
-                <!-- <tr>
-                    <th scope="row">/users/[ID]/[Password]</th>
-                    <td>Allows a user to update its password</td>
-                    <td>PUT</td>
-                    <td>None</td>
-                    <td>A text message indicating wheter the password was updated</td>
-                </tr>
-                <tr>
-                    <th scope="row">/users/[ID]/[Mail]</th>
-                    <td>Allows a user to update its email adress</td>
-                    <td>PUT</td>
-                    <td>None</td>
-                    <td>A text message indicating wheter the email adress was updated</td>
-                </tr>
-                <tr>
-                    <th scope="row">/users/[ID]/[doB]</th>
-                    <td>Allows a user to update its date of birth</td>
-                    <td>PUT</td>
-                    <td>None</td>
-                    <td>A text message indicating wheter the date of birth was updated</td>
-                </tr> -->
                 <tr>
                     <th scope="row">/users/[UName]/movies/[MovieID]</th>
                     <td>Allows a user to add a movie to its list of favorites</td>
@@ -211,6 +190,10 @@
                 </tr>
             </tbody>
         </table>
+        <p>"/users/<strong>[UName]</strong>/movies/<strong>[MovieID]</strong>"<br>
+            Please note that within the given URL-endpoints, every fraction encountered by brackets are <strong><u>query parameters.</u></strong><br>
+            When setting a request to this endpoint, you need to adapt <strong>[UName]</strong> and  <strong>[MovieID]</strong>
+            to the corresponding <strong><em>:username</em></strong> and <strong><em>:mId</em></strong>.</p>
     </div>
 </div>
 </div>

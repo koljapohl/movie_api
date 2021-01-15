@@ -6,8 +6,9 @@ uuid = require('uuid');
 
 const app = express();
 
-let topMovies = [
+let movies = [
     {
+        id: '1',
         title: 'The Green Mile',
         description: `The Green Mile is a 1999 American fantasy drama film written and directed by Frank Darabont and based on Stephen King's 1996 novel of the same name.
                             It stars Tom Hanks as a death row corrections officer during the Great Depression who witnesses supernatural events that occur after an enigmatic inmate is brought to his facility.`,
@@ -160,16 +161,16 @@ let directors = [
     },
     {
         name: 'Christopher Nolan',
-        bio: `Christopher Edward Nolan CBE is a British-American film director, producer, and screenwriter.
-        His directorial efforts have grossed more than US$5.1 billion worldwide, garnered 34 Oscar nominations and ten wins.
-        Born and raised in London, Nolan developed an interest in filmmaking from a young age.
-        After studying English literature at University College London, he made his feature debut with Following (1998).
-        Nolan gained international recognition with his second film, Memento (2000), for which he was nominated for the Academy Award for Best Original Screenplay.
-        He transitioned from independent to studio filmmaking with Insomnia (2002), and found further critical and
-        commercial success with The Dark Knight Trilogy (2005–2012), The Prestige (2006), and Inception (2010),
-        which received eight Oscar nominations, including for Best Picture and Best Original Screenplay.
-        This was followed by Interstellar (2014), Dunkirk (2017), and Tenet (2020).
-        He earned Academy Award nominations for Best Picture and Best Director for his work on Dunkirk. `,
+        bio: 'Christopher Edward Nolan CBE is a British-American film director, producer, and screenwriter. '+
+        'His directorial efforts have grossed more than US$5.1 billion worldwide, garnered 34 Oscar nominations and ten wins. '+
+        'Born and raised in London, Nolan developed an interest in filmmaking from a young age. '+
+        'After studying English literature at University College London, he made his feature debut with Following (1998). '+
+        'Nolan gained international recognition with his second film, Memento (2000), for which he was nominated for the Academy Award for Best Original Screenplay. '+
+        'He transitioned from independent to studio filmmaking with Insomnia (2002), and found further critical and '+
+        'commercial success with The Dark Knight Trilogy (2005–2012), The Prestige (2006), and Inception (2010), '+
+        'which received eight Oscar nominations, including for Best Picture and Best Original Screenplay. '+
+        'This was followed by Interstellar (2014), Dunkirk (2017), and Tenet (2020). '+
+        'He earned Academy Award nominations for Best Picture and Best Director for his work on Dunkirk.',
         birthYear: '1970',
         deathYear: '-'
     }
@@ -190,11 +191,11 @@ app.get('/', (req, res) => {
 });
 //GET a List of all Movies
 app.get('/movies', (req, res) => {
-    res.status(201).json(topMovies);
+    res.status(201).json(movies);
 });
 //GET data about a single movie by title
 app.get('/movies/:title', (req, res) => {
-    let movie = topMovies.find((movie) => {return movie.title === req.params.title});
+    let movie = movies.find((movie) => {return movie.title === req.params.title});
     if (movie) {
         res.status(201).json(movie);
     } else {
@@ -249,7 +250,7 @@ app.put('/users/:username', (req, res) => {
 //Adds a movie to a users list of favorites
 app.post('/users/:username/movies/:mId', (req, res) => {
     let user = users.find((user) => {return user.username === req.params.username});
-    let movie = topMovies.find((movie) => {return movie.id === req.params.mId});
+    let movie = movies.find((movie) => {return movie.id === req.params.mId});
 
     if (!user) {
         res.status(404).send('This user does not exist.');

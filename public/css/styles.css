@@ -27,12 +27,13 @@ nav img {
 }
 .nav-link {
     font-size: 1.2rem;
-    color: black;
+    color: var(--tertiary-color) !important;
     transition: color 250ms ease-out;
     padding-top: 0;
     padding-bottom: 0;
 }
 .navbar-brand {
+    color: var(--tertiary-color) !important;
     font-size: 1.3rem;
     transition: color 250ms ease-out;
 }
