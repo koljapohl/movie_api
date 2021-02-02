@@ -30,7 +30,7 @@ const auth = require('./auth.js')(app);
 require('./passport.js');
 
 //set cors policy for this app
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+let allowedOrigins = ['http://localhost:8080', 'http://0.0.0.0', '*'];
 
 app.use(cors({
     origin: (origin, callback) => {
