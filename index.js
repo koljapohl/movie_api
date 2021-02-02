@@ -15,9 +15,9 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 //connect to local mongoDB
-//mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true});
 //connect to MongoDB Atlas
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true});
+//mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true});
 //use terminal logger
 app.use(morgan('common'));
 //serve static files from within 'public' folder
@@ -214,14 +214,14 @@ app.put('/users/:Username',
     });
 
 //Adds a movie to a users list of favorites
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), (req, res) => {
-    const movieTitle = Movies.findById(req.params.MovieID, 'Title').Title;
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    const movieTitle = await Movies.findById(req.params.MovieID);
     Users.findOneAndUpdate({Username: req.params.Username},
     {
         $addToSet: {FavoriteMovies: req.params.MovieID }
     })
     .then(() => {
-        res.status(201).send(movieTitle + ' was successfully added to ' + req.params.Username + '\'s list of favorites.');
+        res.status(201).send(movieTitle.Title + ' was successfully added to ' + req.params.Username + '\'s list of favorites.');
     })
     .catch((err) => {
         console.error(err);
@@ -229,13 +229,14 @@ app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {sessi
     });
 });
 //Deletes a movie from a users list of favorites
-app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    let movie = await Movies.findById(req.params.MovieID);
     Users.findOneAndUpdate({Username: req.params.Username},
         {
             $pull: { FavoriteMovies: req.params.MovieID }
         })
         .then(() => {
-            res.status(200).send(req.params.MovieID + ' was successfully deleted from ' + req.params.Username + '\'s list of favorites.');
+            res.status(200).send(movie.Title + ' was successfully removed from '+ req.params.Username + '\'s list of favorites.');
         })
         .catch((err) => {
             console.error(err);
@@ -262,7 +263,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}),  
 app.get('/movies/test/:MovieID', (req, res) => {
     Movies.findById( req.params.MovieID, 'Title')
         .then((movie) => {
-            res.status(200).send(movie.Title + ' and some more text.');
+            res.status(200).send('The title of the movie with ObjectId ' + req.params.MovieID + ' is ' + movie.Title + '.');
         })
         .catch((err) => {
             console.error(err);
