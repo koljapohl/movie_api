@@ -15,9 +15,9 @@ const Movies = Models.Movie;
 const Users = Models.User;
 
 //connect to local mongoDB
-//mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true});
 //connect to MongoDB Atlas
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true});
+//mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true});
 //use terminal logger
 app.use(morgan('common'));
 //serve static files from within 'public' folder
