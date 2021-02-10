@@ -55,7 +55,7 @@ app.get('/', (req, res) => {
     res.status(200).send('Welcome to myFlix!');
 });
 //GET a List of all Movies
-app.get('/movies', passport.authenticate('jwt', {session: false}), (req, res) => {
+app.get('/movies', (req, res) => {
 Movies.find()
     .then((movies) => {
         res.status(201).json(movies);
