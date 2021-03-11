@@ -43,7 +43,7 @@ app.use( cors(
     //             return callback(null, true);
     //     }
     // }
-) );
+) )
 
 //error handler
 app.use( ( err, req, res, next ) => {
