@@ -59,3 +59,7 @@ Requirements:
 For uploading the newest *committed* code and deploying it to Heroku, run
 
 `git push heroku main`
+
+## Documentation
+
+for further endpoint documentation please see: [https://myflix-kp.herokuapp.com/documentation.html]
